@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Item, CartItem, Transaction } from "@/types";
+import { Item, CartItem, Transaction, User } from "@/types";
 import Receipt from "../components/Receipt";
 
 const sampleProducts: Item[] = [
@@ -12,8 +12,9 @@ const sampleProducts: Item[] = [
   { id: "5", name: "Socket 13A", price: 800, category: "Accessories", quantity: 150, sku: "ACC-001", unit: "Piece" },
 ];
 
-export default function SalesPage({ userRole }: { userRole?: "cashier" | "inventory_accountant" }) {
+export default function SalesPage() {
   const [products, setProducts] = useState<Item[]>(sampleProducts);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("Cash");
@@ -32,6 +33,13 @@ export default function SalesPage({ userRole }: { userRole?: "cashier" | "invent
         ...t,
         date: new Date(t.date),
       })));
+    }
+
+    // Get current user from localStorage
+    const savedCurrentUser = localStorage.getItem("currentUser");
+    if (savedCurrentUser) {
+      const user = JSON.parse(savedCurrentUser);
+      setUserRole(user.roleId);
     }
   }, []);
 

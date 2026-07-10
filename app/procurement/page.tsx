@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { Item, CartItem, Transaction } from "@/types";
 
 const sampleProducts: Item[] = [
-  { id: "1", name: "1.5mm Cable (Roll)", price: 15000, category: "Cables", quantity: 50, sku: "CAB-001" },
-  { id: "2", name: "2.5mm Cable (Roll)", price: 22000, category: "Cables", quantity: 35, sku: "CAB-002" },
-  { id: "3", name: "4mm Cable (Roll)", price: 35000, category: "Cables", quantity: 25, sku: "CAB-003" },
-  { id: "4", name: "LED Bulb 10W", price: 500, category: "Bulbs", quantity: 200, sku: "BLB-001" },
-  { id: "5", name: "Socket 13A", price: 800, category: "Accessories", quantity: 150, sku: "ACC-001" },
+  { id: "1", name: "1.5mm Cable (Roll)", price: 15000, category: "Cables", quantity: 50, sku: "CAB-001", unit: "Roll" },
+  { id: "2", name: "2.5mm Cable (Roll)", price: 22000, category: "Cables", quantity: 35, sku: "CAB-002", unit: "Roll" },
+  { id: "3", name: "4mm Cable (Roll)", price: 35000, category: "Cables", quantity: 25, sku: "CAB-003", unit: "Roll" },
+  { id: "4", name: "LED Bulb 10W", price: 500, category: "Bulbs", quantity: 200, sku: "BLB-001", unit: "Piece" },
+  { id: "5", name: "Socket 13A", price: 800, category: "Accessories", quantity: 150, sku: "ACC-001", unit: "Piece" },
 ];
 
 export default function ProcurementPage() {

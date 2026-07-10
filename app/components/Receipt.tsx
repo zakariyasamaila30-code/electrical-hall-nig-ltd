@@ -84,10 +84,10 @@ export default function Receipt({ transaction, onClose }: ReceiptProps) {
                     {item.name}
                     <span className="text-xs text-gray-500 ml-1">({item.unit})</span>
                   </td>
-                  <td className="text-right py-1">{"cartQuantity" in item ? item.cartQuantity : item.quantity}</td>
+                  <td className="text-right py-1">{item.cartQuantity}</td>
                   <td className="text-right py-1">₦{item.price.toLocaleString()}</td>
                   <td className="text-right py-1">
-                    ₦{((item.price) * ("cartQuantity" in item ? item.cartQuantity : item.quantity)).toLocaleString()}
+                    ₦{((item.price) * item.cartQuantity).toLocaleString()}
                   </td>
                 </tr>
               ))}

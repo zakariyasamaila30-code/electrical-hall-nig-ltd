@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Transaction } from "@/types";
+import { Transaction, User } from "@/types";
 
-export default function ReportsPage({ userRole }: { userRole?: "cashier" | "inventory_accountant" }) {
+export default function ReportsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("sales");
 
   useEffect(() => {
@@ -14,6 +15,13 @@ export default function ReportsPage({ userRole }: { userRole?: "cashier" | "inve
         ...t,
         date: new Date(t.date),
       })));
+    }
+
+    // Get current user from localStorage
+    const savedCurrentUser = localStorage.getItem("currentUser");
+    if (savedCurrentUser) {
+      const user = JSON.parse(savedCurrentUser);
+      setUserRole(user.roleId);
     }
   }, []);
 

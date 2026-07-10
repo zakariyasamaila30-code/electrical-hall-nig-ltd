@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Item } from "@/types";
+import { Item, User } from "@/types";
 
 const sampleProducts: Item[] = [
   { id: "1", name: "1.5mm Cable", price: 15000, category: "Cables", quantity: 50, sku: "CAB-001", unit: "Roll" },
@@ -11,8 +11,9 @@ const sampleProducts: Item[] = [
   { id: "5", name: "Socket 13A", price: 800, category: "Accessories", quantity: 150, sku: "ACC-001", unit: "Piece" },
 ];
 
-export default function ProductsPage({ userRole }: { userRole?: "cashier" | "inventory_accountant" }) {
+export default function ProductsPage() {
   const [products, setProducts] = useState<Item[]>(sampleProducts);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("manage");
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Item | null>(null);
@@ -29,6 +30,13 @@ export default function ProductsPage({ userRole }: { userRole?: "cashier" | "inv
     const savedProducts = localStorage.getItem("products");
     if (savedProducts) {
       setProducts(JSON.parse(savedProducts));
+    }
+
+    // Get current user from localStorage
+    const savedCurrentUser = localStorage.getItem("currentUser");
+    if (savedCurrentUser) {
+      const user = JSON.parse(savedCurrentUser);
+      setUserRole(user.roleId);
     }
   }, []);
 

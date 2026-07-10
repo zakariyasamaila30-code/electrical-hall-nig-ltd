@@ -183,14 +183,14 @@ export default function Home() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} onLogout={handleLogout} />
         <main className="flex-1 overflow-y-auto p-6">
-          {activePage === "dashboard" && canAccess("dashboard") && <Dashboard userRole={currentUser?.roleId} />}
-          {activePage === "products" && canAccess("products") && <ProductsPage userRole={currentUser?.roleId} />}
-          {activePage === "sales" && canAccess("sales") && <SalesPage userRole={currentUser?.roleId} />}
-          {activePage === "reports" && canAccess("reports") && <ReportsPage userRole={currentUser?.roleId} />}
+          {activePage === "dashboard" && canAccess("dashboard") && <Dashboard />}
+          {activePage === "products" && canAccess("products") && <ProductsPage />}
+          {activePage === "sales" && canAccess("sales") && <SalesPage />}
+          {activePage === "reports" && canAccess("reports") && <ReportsPage />}
           {activePage === "settings" && canAccess("settings") && <SettingsPage />}
           {activePage === "procurement" && canAccess("procurement") && <ProcurementPage />}
           {activePage === "accounting" && canAccess("accounting") && <AccountingDashboard />}
-          {activePage === "label-printing" && canAccess("label-printing") && <ProductsPage userRole={currentUser?.roleId} />}
+          {activePage === "label-printing" && canAccess("label-printing") && <ProductsPage />}
         </main>
       </div>
     </div>

@@ -5,16 +5,16 @@ import { Item, CartItem, Transaction } from "@/types";
 import Receipt from "./receipt";
 
 const sampleItems: Item[] = [
-  { id: "1", name: "1.5mm Cable (Roll)", price: 15000, category: "Cables" },
-  { id: "2", name: "2.5mm Cable (Roll)", price: 22000, category: "Cables" },
-  { id: "3", name: "4mm Cable (Roll)", price: 35000, category: "Cables" },
-  { id: "4", name: "6mm Cable (Roll)", price: 55000, category: "Cables" },
-  { id: "5", name: "10mm Cable (Roll)", price: 85000, category: "Cables" },
-  { id: "6", name: "16mm Cable (Roll)", price: 125000, category: "Cables" },
-  { id: "7", name: "Bulb (LED 10W)", price: 500, category: "Bulbs" },
-  { id: "8", name: "Socket (13A)", price: 800, category: "Accessories" },
-  { id: "9", name: "Switch (1 Gang)", price: 600, category: "Accessories" },
-  { id: "10", name: "Extension Box (4 Way)", price: 2500, category: "Accessories" },
+  { id: "1", name: "1.5mm Cable (Roll)", price: 15000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "2", name: "2.5mm Cable (Roll)", price: 22000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "3", name: "4mm Cable (Roll)", price: 35000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "4", name: "6mm Cable (Roll)", price: 55000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "5", name: "10mm Cable (Roll)", price: 85000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "6", name: "16mm Cable (Roll)", price: 125000, category: "Cables", quantity: 100, unit: "Roll" },
+  { id: "7", name: "Bulb (LED 10W)", price: 500, category: "Bulbs", quantity: 100, unit: "Piece" },
+  { id: "8", name: "Socket (13A)", price: 800, category: "Accessories", quantity: 100, unit: "Piece" },
+  { id: "9", name: "Switch (1 Gang)", price: 600, category: "Accessories", quantity: 100, unit: "Piece" },
+  { id: "10", name: "Extension Box (4 Way)", price: 2500, category: "Accessories", quantity: 100, unit: "Piece" },
 ];
 
 export default function POSDashboard() {
@@ -40,10 +40,10 @@ export default function POSDashboard() {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === item.id ? { ...i, cartQuantity: i.cartQuantity + 1 } : i
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, cartQuantity: 1 }];
     });
   };
 
@@ -51,13 +51,13 @@ export default function POSDashboard() {
     setCart((prev) =>
       prev
         .map((i) =>
-          i.id === itemId ? { ...i, quantity: i.quantity + change } : i
+          i.id === itemId ? { ...i, cartQuantity: i.cartQuantity + change } : i
         )
-        .filter((i) => i.quantity > 0)
+        .filter((i) => i.cartQuantity > 0)
     );
   };
 
-  const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = cart.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
 
   const checkout = () => {
     if (cart.length === 0) return;
@@ -69,6 +69,7 @@ export default function POSDashboard() {
       items: cart,
       totalAmount,
       paymentMethod,
+      type: "sale"
     };
 
     const updatedTransactions = [...transactions, transaction];
@@ -145,7 +146,7 @@ export default function POSDashboard() {
                   <div>
                     <div className="font-medium">{item.name}</div>
                     <div className="text-sm text-gray-600">
-                      ₦{item.price.toLocaleString()} x {item.quantity}
+                      ₦{item.price.toLocaleString()} x {item.cartQuantity}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -155,7 +156,7 @@ export default function POSDashboard() {
                     >
                       -
                     </button>
-                    <span className="w-6 text-center">{item.quantity}</span>
+                    <span className="w-6 text-center">{item.cartQuantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, 1)}
                       className="w-8 h-8 rounded bg-green-100 text-green-700 hover:bg-green-200"

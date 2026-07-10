@@ -53,9 +53,9 @@ export default function Receipt({ transaction, onClose }: ReceiptProps) {
               {transaction.items.map((item) => (
                 <tr key={item.id} className="border-b">
                   <td className="py-1">{item.name}</td>
-                  <td className="text-right py-1">{item.quantity}</td>
+                  <td className="text-right py-1">{item.cartQuantity}</td>
                   <td className="text-right py-1">₦{item.price.toLocaleString()}</td>
-                  <td className="text-right py-1">₦{(item.price * item.quantity).toLocaleString()}</td>
+                  <td className="text-right py-1">₦{(item.price * item.cartQuantity).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
