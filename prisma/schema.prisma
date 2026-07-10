@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model CompanySettings {
+  id        String   @id @default(cuid())
+  name      String   @default("Electrical Hall (Nig) Ltd")
+  address   String   @default("50, Idoluwo Street Idumota Lagos Island, Lagos.")
+  phone     String   @default("09080930885, 08021030267")
+  email     String   @default("electricalhall@yahoo.com")
+  rcNumber  String   @default("1187947")
+  motto     String   @default("In God Alone We put our Trust")
+  logo      String?  // Base64 encoded image
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  roleId    String
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Role {
+  id          String              @id @default(cuid())
+  name        String              @unique
+  description String?
+  permissions Permission
+  users       User[]
+  createdAt   DateTime            @default(now())
+}
+
+type Permission {
+  dashboard   Boolean @default(true)
+  categories  Boolean @default(true)
+  products    Boolean @default(true)
+  reports     Boolean @default(true)
+  sales       Boolean @default(true)
+  procurement Boolean @default(true)
+  accounting  Boolean @default(true)
+  settings    Boolean @default(true)
+  users       Boolean @default(true)
+  subscriptions Boolean @default(true)
+  costcentres Boolean @default(true)
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  name      String
+  price     Float
+  category  String
+  quantity  Int      @default(0)
+  sku       String?
+  unit      String   @default("Piece")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id               String   @id @default(cuid())
+  productId        String
+  product          Product  @relation(fields: [productId], references: [id])
+  cartQuantity     Int      @default(1)
+  transactionId    String?
+  transaction      Transaction? @relation(fields: [transactionId], references: [id])
+}
+
+model Transaction {
+  id            String       @id @default(cuid())
+  date          DateTime     @default(now())
+  customerName  String?
+  items         CartItem[]
+  totalAmount   Float
+  paymentMethod String
+  type          String       // "sale" or "purchase"
+  isTaxable     Boolean      @default(false)
+  taxAmount     Float        @default(0)
+  createdAt     DateTime     @default(now())
+}
+
+model Supplier {
+  id                 String                @id @default(cuid())
+  name               String
+  email              String?
+  phone              String
+  address            String?
+  bankName           String?
+  bankAccountNumber  String?
+  bankAccountName    String?
+  transactions       SupplierTransaction[]
+  createdAt          DateTime              @default(now())
+}
+
+model SupplierTransaction {
+  id          String   @id @default(cuid())
+  supplierId  String
+  supplier    Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  type        String   // "credit" or "debit"
+  amount      Float
+  description String
+  referenceNumber String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
